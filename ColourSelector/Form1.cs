@@ -86,7 +86,16 @@ namespace ColourSelector
 
         private void doGraphicShit(MouseEventArgs mev)
         {
-            const int baseSize = 40;
+            int baseSize = 40;
+
+            try
+            {
+                baseSize = Int32.Parse(textBox1.Text);
+            }
+            catch
+            {
+                textBox1.Text = "40";
+            }
 
             Random rnd = new Random();
 
