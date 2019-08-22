@@ -86,16 +86,7 @@ namespace ColourSelector
 
         private void doGraphicShit(MouseEventArgs mev)
         {
-            int baseSize = 40;
-
-            try
-            {
-                baseSize = Int32.Parse(textBox1.Text);
-            }
-            catch
-            {
-                textBox1.Text = "40";
-            }
+            int baseSize = trackBar1.Value;
 
             Random rnd = new Random();
 
@@ -223,6 +214,11 @@ namespace ColourSelector
         private void button1_Click(object sender, EventArgs e)
         {
             doGraphicShit(null);
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            label6.Text = trackBar1.Value.ToString();
         }
     }
 }
