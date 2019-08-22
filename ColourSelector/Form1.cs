@@ -165,22 +165,18 @@ namespace ColourSelector
                 }
             }
 
-            Color c1 = pixels[rnd.Next(0, baseSize * baseSize)];
-            Color c2 = pixels[rnd.Next(0, baseSize * baseSize)];
-            Color c3 = pixels[rnd.Next(0, baseSize * baseSize)];
 
-            while((c1 == Color.Black) || c1 == Color.White)
+            for(int i = 0; i < pixels.Count(); i++)
             {
-                c1 = pixels[rnd.Next(0, baseSize * baseSize)];
+                if(pixels[i] == Color.FromArgb(0, 0, 0))
+                {
+                    pixels.RemoveAt(i);
+                }
             }
-            while ((c2 == Color.Black) || c2 == Color.White)
-            {
-                c2 = pixels[rnd.Next(0, baseSize * baseSize)];
-            }
-            while ((c3 == Color.Black) || c3 == Color.White)
-            {
-                c3 = pixels[rnd.Next(0, baseSize * baseSize)];
-            }
+
+            Color c1 = pixels[rnd.Next(0, pixels.Count())];
+            Color c2 = pixels[rnd.Next(0, pixels.Count())];
+            Color c3 = pixels[rnd.Next(0, pixels.Count())];
 
             c1 = ControlPaint.Light(c1, rnd.Next(0, 75));
             c2 = ControlPaint.Light(c2, rnd.Next(0, 75));
