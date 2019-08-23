@@ -117,9 +117,10 @@ namespace ColourSelector
             }
 
             g.DrawRectangle(Pens.Black, p.X, p.Y, 1, 1);
-            g.DrawLine(Pens.Black, p, o);
-            getCircle(g, Pens.Black, p, baseSize / 2);
-            getCircle(g, Pens.Red, o, baseSize / 2);
+            g.DrawRectangle(Pens.Black, o.X, o.Y, 1, 1);
+            //g.DrawLine(Pens.Black, p, o);
+            //getCircle(g, Pens.Black, p, baseSize / 2);
+            //getCircle(g, Pens.Red, o, baseSize / 2);
             pictureBox1.Image = b;
             label2.BackColor = colorOp;
 
@@ -165,22 +166,24 @@ namespace ColourSelector
                 }
             }
 
-
-            for(int i = 0; i < pixels.Count(); i++)
+            for (int i = 0; i < pixels.Count(); i++)
             {
-                if(pixels[i] == Color.FromArgb(0, 0, 0))
+                //Console.WriteLine(pixels[i].R + " " + pixels[i].B + " " + pixels[i].G);
+                if ((pixels[i].R + " " + pixels[i].B + " " + pixels[i].G) == "0 0 0")
                 {
                     pixels.RemoveAt(i);
+                    //Console.WriteLine("**Removed**");
                 }
+
             }
 
             Color c1 = pixels[rnd.Next(0, pixels.Count())];
             Color c2 = pixels[rnd.Next(0, pixels.Count())];
             Color c3 = pixels[rnd.Next(0, pixels.Count())];
 
-            c1 = ControlPaint.Light(c1, rnd.Next(0, 75));
-            c2 = ControlPaint.Light(c2, rnd.Next(0, 75));
-            c3 = ControlPaint.Light(c3, rnd.Next(0, 75));
+            c1 = brightnessAdjust(c1);
+            c2 = brightnessAdjust(c2);
+            c3 = brightnessAdjust(c3);
 
             label3.BackColor = c1;
             label4.BackColor = c2;
@@ -202,6 +205,40 @@ namespace ColourSelector
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
             doGraphicShit(e);
+        }
+
+        private Color brightnessAdjust(Color c)
+        {
+            Random rnd = new Random();
+            Color modif = c;
+            int modR = modif.R;
+            int modG = modif.G;
+            int modB = modif.B;
+
+            int Rdif = 255 - modR;
+            int Gdif = 255 - modB;
+            int Bdif = 255 - modG;
+
+            bool swit = (bool)(rnd.NextDouble() < 50 / 100);
+
+            if (swit)
+            {
+                int RRand = rnd.Next(0, Rdif);
+                int GRand = rnd.Next(0, Gdif);
+                int BRand = rnd.Next(0, Bdif);
+
+                modif = Color.FromArgb(c.A, c.R + RRand / 2, c.G + GRand / 2, c.B + BRand / 2);
+            }
+            else
+            {
+                int RRand = rnd.Next(0, modR);
+                int GRand = rnd.Next(0, modG);
+                int BRand = rnd.Next(0, modB);
+
+                modif = Color.FromArgb(c.A, c.R - RRand / 2, c.G - GRand / 2, c.B - BRand / 2);
+            }
+
+            return modif;
         }
 
         private void getCircle(Graphics drawingArea, Pen penToUse, Point center, int radius)
